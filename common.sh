@@ -33,7 +33,7 @@ if [[ ! ${bendi_script} == "1" ]]; then
 fi
 
 if [[ ${SOURCE_CODE} == "LEDE" ]]; then
-  export REPO_URL="https://github.com/coolsnowwolf/lede"
+  export REPO_URL="https://github.com/RLEDE/lede"
   export REPO_BRANCH="master"
 elif [[ ${SOURCE_CODE} == "LIENOL" ]]; then
   export REPO_URL="https://github.com/Lienol/openwrt"
@@ -324,10 +324,8 @@ esac
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 echo "
 src-git helloworld https://github.com/fw876/helloworld
-src-git passwall https://github.com/xiaorouji/openwrt-passwall;packages
-src-git passwall1 https://github.com/xiaorouji/openwrt-passwall;luci
-src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
-src-git danshui https://github.com/281677160/openwrt-package.git;${REPO_BRANCH}
+src-git passwall https://github.com/nantayo/passwall
+src-git danshui https://github.com/RLEDE/openwrt-package.git;${REPO_BRANCH}
 src-git nas https://github.com/linkease/nas-packages.git;master
 src-git nas_luci https://github.com/linkease/nas-packages-luci.git;main
 " >> $HOME_PATH/feeds.conf.default
@@ -661,13 +659,6 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-samba4=y" ${HOME_PATH}/.config` -eq '1' 
 fi
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  pmg="$(echo "$(date +%d)" | sed 's/^.//g')"
-  mkdir -p $HOME_PATH/files/www/luci-static/argon/background
-  curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/argon/jpg/${pmg}.jpg > $HOME_PATH/files/www/luci-static/argon/background/moren.jpg
-  if [[ $? -ne 0 ]]; then
-    echo "拉取文件错误,请检测网络"
-    exit 1
-  fi
   if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon_new=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-theme-argon_new=y/# CONFIG_PACKAGE_luci-theme-argon_new is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您同时选择luci-theme-argon和luci-theme-argon_new，插件有冲突，相同功能插件只能二选一，已删除luci-theme-argon_new\"" >>CHONGTU
@@ -713,7 +704,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-unblockneteasemusic=y" ${HOME_PATH}/.con
 fi
 
 if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  mkdir -p ${HOME_PATH}/files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
+  mkdir -p ${HOME_PATH}/files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/RLEDE/target/main/10-mount > ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
   if [[ $? -ne 0 ]]; then
     echo "拉取文件错误,请检测网络"
     exit 1
